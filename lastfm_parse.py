@@ -10,9 +10,8 @@ pygame.init()
 SECONDS_IN_A_DAY = 86400
 time_height = 1000
 time_width = 1000
-size=[1000, 1000]
+size=[time_width, time_height]
 screen=pygame.display.set_mode(size)
-font = pygame.font.Font(None, 25)
 max_req=200
 
 display_from_uts = datetime.now() - timedelta(3)
@@ -49,11 +48,8 @@ class Track(object):
         rect = pygame.Rect((x, y), (width_of_bar,0))
         pygame.draw.rect(screen, self.color, rect)
 
-###
-# Get a list of some tracks
-###
 
-
+## The actual work is done here!
 # open the api_detail file
 f = open('api_details.txt')
 api_key = f.readline()
