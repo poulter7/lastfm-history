@@ -1,3 +1,4 @@
+from __future__ import division
 import pygame, urllib2, json, pprint
 from random import randint, random
 from datetime import datetime
@@ -6,21 +7,22 @@ from colorsys import hsv_to_rgb
 
 # setup some useful stuff for display
 pygame.init()
+SECONDS_IN_A_DAY = 86400
 time_height = 1000
 time_width = 1000
 size=[1000, 1000]
 screen=pygame.display.set_mode(size)
 font = pygame.font.Font(None, 25)
 
-# Define the colors we will use in RGB format
+def seconds_past_midnight(time):
+    return time.hour*3600 + time.minute*60 + time.second
+
+# define the colors we will use in rgb format
 black = [  0,  0,  0]
-white = [255,255,255]
+white = [255,255,255]                                                              
 blue =  [  0,  0,255]
 green = [  0,255,  0]
 red =   [255,  0,  0]
-
-def seconds_past_midnight(time):
-    return time.hour*3600 + time.minute*60 + time.second
 
 class Track(object):
     def __init__(self, name = '', datetime = datetime.now()):
@@ -33,7 +35,8 @@ class Track(object):
         time = self.datetime.time()
         date = self.datetime.date()
         x = 100
-        y = int(seconds_past_midnight(time)/time_height)
+        # y position is based on portion through the day
+        y = int((seconds_past_midnight(time)/SECONDS_IN_A_DAY)*time_height)
         p = (x, y)
         print p
         print self.color
