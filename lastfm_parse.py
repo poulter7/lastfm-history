@@ -1,8 +1,23 @@
-import sys, time, pygame
+import sys, time, pygame, urllib2, json, pprint
 
+# open the api_detail file
+f = open('api_details.txt')
+api_key = f.readline()
+secret = f.readline() 
+f.close()
+
+# get some information
+user = 'poulter7'
+response = urllib2.urlopen('http://ws.audioscrobbler.com/2.0/?format=json&method=user.getrecenttracks&user=' + user +'&api_key='+api_key )
+json_response = response.read()
+
+# process the response
+data = json.loads(json_response)
+tracks = ['recenttracks']['track']
+
+# setup some useful stuff for display
 pygame.init()
 size=[1000, 1000]
-center=[200, 500]
 screen=pygame.display.set_mode(size)
 
 # Define the colors we will use in RGB format
@@ -12,20 +27,17 @@ blue =  [  0,  0,255]
 green = [  0,255,  0]
 red =   [255,  0,  0]
 font = pygame.font.Font(None, 25)
- 
+
 class Track(object):
-    def __init__(self, color = red, name ='', size = 2, date = 0):
+    def __init__(self, color = red, name = '', date = 0):
         self.color = color
-        self.size = size
-        self.angle = angle
-        self.pos = pos
-        self.offset = offset
+        self.date = date
         self.text = font.render(name, True, white)
 
     def update(self, screen):
-        p = (self.pos[0]+center[0], self.pos[1]+center[1])
-        pygame.draw.circle(screen, self.color, (int(p[0]), int(p[1])), self.size)
-#        screen.blit(self.text, [i+5 for i in p])
+        p = (0,0)
+        pygame.draw.circle(screen, self.color, p, self.size)
+        screen.blit(self.text, p)
 
 
 tracks_sprites = []
@@ -35,4 +47,4 @@ def display_data():
         t.update(screen)
     pygame.display.update()
 
-#pygame.quit()
+pygame.quit()
