@@ -17,6 +17,7 @@ class Track(object):
     def __init__(self, color = red, name = '', date = 0):
         self.color = color
         self.date = date
+        self.size = 3
 
     def update(self, screen):
         p = (0,0)
@@ -49,13 +50,10 @@ track_data = data['recenttracks']['track']
 ###
 ts = datetime.datetime.fromtimestamp
 tracks = [Track(name = t['name'], date = ts(float(t['date']['uts']))) for t in track_data]
-for t in tracks:
-    print t.date
 
-tracks_sprites = []
 def display_data():
     screen.fill(black)
-    for t in tracks_sprites:
+    for t in tracks:
         t.update(screen)
     pygame.display.update()
 
